@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doppler Effect – Interactive Physics Simulation | Abdullah Ashraf</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== INTRO ===== -->
+<div id="intro">
+  <div class="intro-stage">
+    <div class="rings"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <!-- LOGO: replace assets/logo/aa-logo.svg with your own file. If it is missing, a built-in AA placeholder logo appears. -->
+    <img class="logo-img big" src="E:\Dooplers Effect\images\Logo.png" alt="AA logo (add your logo at assets/logo/aa-logo.svg)">
+    <h1>DOPPLER EFFECT</h1>
+    <p class="sub">INTERACTIVE PHYSICS SIMULATION</p>
+    <p class="by">ABDULLAH ASHRAF</p>
+    <div class="loader"><span></span></div>
+  </div>
+  <button id="skipIntro" class="btn ghost">Skip intro</button>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header class="top">
+  <div class="brand">
+    <img class="logo-img" src="E:\Dooplers Effect\images\Logo.png" alt="AA logo (add your logo at assets/logo/aa-logo.svg)">
+    <div><b>DOPPLER EFFECT</b><small>Interactive Physics Simulation · Presented by Abdullah Ashraf</small></div>
+  </div>
+  <nav class="modes" aria-label="Simulation mode">
+    <button class="mode on" data-mode="A" title="Car is still, person moves">Stationary source</button>
+    <button class="mode" data-mode="B" title="Car moves, person is still">Moving source</button>
+    <button class="mode" data-mode="C" title="Both move">Both moving</button>
+  </nav>
+  <div class="tools">
+    <button id="bSound" class="btn" title="Turn sound on or off">Sound: Off</button>
+    <button id="bTheme" class="btn" title="Switch light / dark theme">Theme</button>
+    <button id="bPresent" class="btn" title="Large, distraction-free view for a projector">Presentation</button>
+    <button id="bFull" class="btn" title="Full-screen simulation">Full screen</button>
+    <button id="bReplay" class="btn" title="Replay the introduction">Replay intro</button>
+    <button id="bResetAll" class="btn warn" title="Restore every value">Reset all</button>
+  </div>
+</header>
+
+<main>
+<section class="stage-row">
+  <div class="scene-card" id="sceneCard">
+    <canvas id="scene" width="1200" height="560" aria-label="Doppler effect side-view animation"></canvas>
+    <div class="transport">
+      <button id="bPlay" class="btn pri">Pause</button>
+      <button id="bRestart" class="btn">Restart</button>
+      <label>Animation speed <input id="speed" type="range" min="0.5" max="2" step="0.1" value="1"><output id="speedO">1.0x</output></label>
+      <span id="caseTitle" class="case-title"></span>
+    </div>
+  </div>
+
+  <aside class="panel" id="controls">
+    <h2>Controls</h2>
+    <div id="caseRow" class="seg">
+      <button class="case on" data-case="0"></button><button class="case" data-case="1"></button>
+    </div>
+    <div id="advRow" class="adv" hidden>
+      <label>Source <select id="sDirSel"><option value="1">approaching listener</option><option value="0">moving away</option></select></label>
+      <label>Listener <select id="lDirSel"><option value="1">approaching source</option><option value="0">moving away</option></select></label>
+    </div>
+    <label class="sl">Original frequency f <output></output><input id="f" type="range" min="100" max="1000" step="1" value="440"></label>
+    <label class="sl">Speed of sound v <output></output><input id="v" type="range" min="200" max="400" step="1" value="343"></label>
+    <label class="sl" id="rowVs">Source velocity vs <output></output><input id="vs" type="range" min="0" max="100" step="1" value="30"></label>
+    <label class="sl" id="rowVl">Listener velocity vL <output></output><input id="vL" type="range" min="0" max="100" step="1" value="30"></label>
+    <label class="sl">Sound volume <output></output><input id="vol" type="range" min="0" max="100" step="1" value="50"></label>
+    <div class="seg">
+      <button id="tOrig" class="btn">Original tone</button><button id="tObs" class="btn on">Observed tone</button>
+    </div>
+    <p class="note">Wave rings are drawn at a reduced frequency so you can watch them. The numbers and the pitch you hear use the real values.</p>
+  </aside>
+</section>
+
+<div class="below">
+<section class="card" id="calc">
+  <h2>Doppler effect calculator</h2>
+  <div class="calc-grid">
+    <label>Case <select id="cMode"><option value="A">Stationary source, moving listener</option><option value="B" selected>Moving source, stationary listener</option><option value="C">Moving source and moving listener</option></select></label>
+    <label>Source direction <select id="cS"><option value="1">towards listener</option><option value="0">away from listener</option></select></label>
+    <label>Listener direction <select id="cL"><option value="1">towards source</option><option value="0">away from source</option></select></label>
+    <label>Frequency f (Hz) <input id="cf" type="number" value="440" min="1"></label>
+    <label>Speed of sound v (m/s) <input id="cv" type="number" value="343" min="1"></label>
+    <label>Source velocity vs (m/s) <input id="cvs" type="number" value="30" min="0"></label>
+    <label>Listener velocity vL (m/s) <input id="cvl" type="number" value="0" min="0"></label>
+  </div>
+  <div class="row">
+    <button id="cGo" class="btn pri">Calculate</button>
+    <button id="cScene" class="btn">Use scene values</button>
+    <button id="cCopy" class="btn">Copy calculation</button>
+    <button id="cClear" class="btn">Clear</button>
+    <button id="cReset" class="btn">Reset values</button>
+  </div>
+  <pre id="cOut" class="out" aria-live="polite"></pre>
+</section>
+
+<section class="card">
+  <h2>Understanding the Doppler effect</h2>
+  <p class="lead">The Doppler Effect is the apparent change in frequency of a wave due to the relative motion between the source of the wave and the observer.</p>
+  <div class="vars" id="vars"></div>
+</section>
+
+<section class="card">
+  <h2>Formula sheet</h2>
+  <table class="tbl" id="formulas"></table>
+  <button id="fCopy" class="btn">Copy formulas</button>
+</section>
+
+<section class="card">
+  <h2>Comparison of the four cases</h2>
+  <div class="scroll"><table class="tbl" id="compare"></table></div>
+</section>
+
+<section class="card">
+  <h2>Doppler effect in real life</h2>
+  <div class="apps" id="apps"></div>
+</section>
+
+<section class="card">
+  <h2>Quiz</h2>
+  <div id="quiz"></div>
+</section>
+</div>
+</main>
+<footer>DOPPLER EFFECT · Interactive Physics Simulation · Developed and presented by <b>Abdullah Ashraf</b></footer>
+<script src="script.js"></script>
+</body>
+</html>
